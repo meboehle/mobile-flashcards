@@ -1,0 +1,6 @@
+export const white = '#fff'
+export const persianGreen = '#26a69a'
+export const tartOrange = '#ef5350'
+export const persianBlue = '#3b28cc'
+export const xiketic = '#0d0106'
+export const gray = '#a9a'
