@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
-import { ScrollView, StyleSheet } from 'react-native'
+import { ScrollView, StyleSheet, View, Text } from 'react-native'
 import DeckDetails from './DeckDetails'
-import { white, xiketic, gray, persianBlue } from '../utils/colors'
+import { white, xiketic, gray, persianBlue, persianGreen } from '../utils/colors'
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
 import { getDecks } from '../utils/api'
@@ -15,24 +15,42 @@ function DeckList ({dispatch, decks, navigation}) {
   }, [getDecks, decks]))
 
   return (
-    <ScrollView>
-      {Object.values(decks).map((deck) => (
-        <TouchableOpacity
-          key={deck.title}
-          onPress={() => navigation.navigate('Deck', { deckId: deck.title })}>
-          <DeckDetails
-            style={styles.deck}
-            titleStyle={styles.deckTitle}
-            subTitleStyle={styles.deckSubtitle}
-            title={deck.title}
-            numCards={deck.questions.length} />
-        </TouchableOpacity>
-      ))}
-    </ScrollView>
+    <View style={{flex: 1}}>
+      <Text style={styles.title}>Flashcard Decks</Text>
+      <ScrollView>
+        {Object.values(decks).map((deck) => (
+          <TouchableOpacity
+            key={deck.title}
+            onPress={() => navigation.navigate('Deck', { deckId: deck.title })}>
+            <DeckDetails
+              style={styles.deck}
+              titleStyle={styles.deckTitle}
+              subTitleStyle={styles.deckSubtitle}
+              title={deck.title}
+              numCards={deck.questions.length} />
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
+  title: {
+    textAlign: 'center',
+    padding: 10,
+    fontSize: 38,
+    color: white,
+    backgroundColor: persianBlue,
+    fontWeight: '400',
+    shadowColor: xiketic,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.4,
+  },
   deck: {
     flex: 1,
     justifyContent: 'center',
@@ -43,16 +61,17 @@ const styles = StyleSheet.create({
     padding: 15,
     backgroundColor: white,
     borderColor: xiketic,
-    borderWidth: 1,
+    borderWidth: 2,
     height: 200,
+    borderRadius: 5,
   },
   deckTitle: {
     padding: 10,
-    fontSize: 30,
+    fontSize: 36,
     color: persianBlue,
   },
   deckSubtitle: {
-    fontSize: 22,
+    fontSize: 26,
     color: gray
   }
 })
