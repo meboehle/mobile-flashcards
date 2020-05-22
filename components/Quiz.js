@@ -13,7 +13,8 @@ class Quiz extends Component {
     incorrect: 0,
     showQuestion: true,
     bounceValue: new Animated.Value(1),
-    fadeValue: new Animated.Value(1)
+    fadeValue: new Animated.Value(1),
+    textBounce: new Animated.Value(1),
   }
 
   componentDidMount () {
@@ -49,14 +50,21 @@ class Quiz extends Component {
   }
 
   correct () {
-    const { bounceValue, fadeValue } = this.state
+    const { fadeValue, textBounce, questionIndex, questions } = this.state
     Animated.sequence([
-      Animated.timing(fadeValue, { toValue: 0, duration: 10 }),
-      Animated.parallel([
-        Animated.timing(fadeValue, { toValue: 1, duration: 1000, delay: 200 }),
-        Animated.spring(bounceValue, { toValue: 1, friction: 4, delay: 900 })
-      ])
+      Animated.timing(fadeValue, { toValue: 0, duration: 5 }),
+      Animated.timing(fadeValue, { toValue: 1, duration: 300, delay: 10 }),
+      Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
+      Animated.spring(textBounce, { toValue: 1, friction: 2 })
     ]).start()
+
+
+    if (questionIndex === questions.length - 1) {
+      Animated.sequence([
+        Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
+        Animated.spring(textBounce, { toValue: 1, friction: 2 }),
+      ]).start()
+    }
 
     this.setState((prevState) => ({
       correct: prevState.correct + 1,
@@ -66,14 +74,20 @@ class Quiz extends Component {
   }
 
   incorrect () {
-    const { bounceValue, fadeValue } = this.state
+    const { fadeValue, textBounce, questionIndex, questions } = this.state
     Animated.sequence([
-      Animated.timing(fadeValue, { toValue: 0, duration: 10 }),
-      Animated.parallel([
-        Animated.timing(fadeValue, { toValue: 1, duration: 1000, delay: 200 }),
-        Animated.spring(bounceValue, { toValue: 1, friction: 4, delay: 900 })
-      ])
+      Animated.timing(fadeValue, { toValue: 0, duration: 5 }),
+      Animated.timing(fadeValue, { toValue: 1, duration: 300, delay: 10 }),
+      Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
+      Animated.spring(textBounce, { toValue: 1, friction: 2 })
     ]).start()
+
+    if (questionIndex === questions.length - 1) {
+      Animated.sequence([
+        Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
+        Animated.spring(textBounce, { toValue: 1, friction: 2 })
+      ]).start()
+    }
 
     this.setState((prevState) => ({
       incorrect: prevState.incorrect + 1,
@@ -83,18 +97,32 @@ class Quiz extends Component {
   }
 
   render() {
-    const { questions, questionIndex, correct, showQuestion, bounceValue, fadeValue } = this.state
+    const {
+      questions,
+      questionIndex,
+      correct,
+      showQuestion,
+      bounceValue,
+      fadeValue,
+      textBounce
+    } = this.state
+
     return (
       (questionIndex < questions.length) ?
-        (<View style={styles.container}>
+        (<Animated.View
+          style={[styles.container, { opacity: fadeValue }]}>
           <View style={styles.statusContainer}>
-            <Text style={styles.status}>
+            <Animated.Text
+              style={[styles.status, { transform: [{ scale: textBounce }]}]}>
               {questionIndex + 1}/{questions.length}
-            </Text>
+            </Animated.Text>
           </View>
           {showQuestion &&
-            (<Animated.View style={[styles.qAndA, { transform: [{ scale: bounceValue }]}, { opacity: fadeValue }]}>
-              <Text style={styles.question}>{questions[questionIndex].question.trim()}?</Text>
+            (<Animated.View
+              style={[styles.qAndA, { transform: [{ scale: bounceValue }]}]}>
+              <Text style={styles.question}>
+                {questions[questionIndex].question.trim()}?
+              </Text>
               <TextButton
                 style={styles.answerBtn}
                 onPress={() => this.showAnswer()}>
@@ -103,8 +131,11 @@ class Quiz extends Component {
             </Animated.View>
           )}
           {!showQuestion &&
-            (<Animated.View style={[styles.qAndA, { transform: [{ scale: bounceValue }]}, { opacity: fadeValue }]}>
-              <Text style={styles.question}>{questions[questionIndex].answer}</Text>
+            (<Animated.View
+              style={[styles.qAndA, { transform: [{ scale: bounceValue }]}]}>
+              <Text style={styles.question}>
+                {questions[questionIndex].answer}
+              </Text>
               <TextButton
                 style={styles.answerBtn}
                 onPress={() => this.showQuestion()}>
@@ -124,15 +155,21 @@ class Quiz extends Component {
               Incorrect
             </TextButton>
           </View>
-        </View>)
+        </Animated.View>)
         : (
           <View style={styles.container}>
             <Text style={styles.score}>Score</Text>
-            {correct/questions.length === 1 ?
-              <Text style={styles.hundred}>💯</Text> :
-              <Text style={styles.results}>
+            {correct/questions.length === 1
+              ?
+              <Animated.Text
+                style={[styles.hundred, { transform: [{ scale: textBounce }]}]}>
+                💯
+              </Animated.Text>
+              :
+              <Animated.Text
+                style={[styles.results, { transform:[{ scale: textBounce }]}]}>
                 {Number(correct/questions.length * 100).toFixed(1)}%
-              </Text>
+              </Animated.Text>
             }
           </View>
         )
