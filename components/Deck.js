@@ -88,7 +88,6 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(decks, { route }) {
   const { deckId } = route.params
-  // const deck = decks[deckId]
   return {
     deckId,
     decks
