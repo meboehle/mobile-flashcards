@@ -96,6 +96,13 @@ const styles = StyleSheet.create({
     backgroundColor: white,
     height: 40,
     width: 300,
+    shadowColor: xiketic,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.4,
     fontSize: 24,
     borderColor: xiketic,
     borderWidth: 1,
