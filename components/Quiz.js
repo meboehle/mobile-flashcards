@@ -25,6 +25,23 @@ class Quiz extends Component {
     })
   }
 
+  restartQuiz () {
+    const { navigation, deckId } = this.props
+
+    this.setState(() => ({
+      correct: 0,
+      incorrect: 0,
+      questionIndex: 0,
+    }))
+
+    navigation.navigate('Quiz', { deckId: deckId })
+  }
+
+  backToDeck () {
+    const { navigation, deckId } = this.props
+    navigation.navigate('Deck', { deckId: deckId })
+  }
+
   showAnswer () {
     const { bounceValue } = this.state
     Animated.sequence([
@@ -171,6 +188,16 @@ class Quiz extends Component {
                 {Number(correct/questions.length * 100).toFixed(1)}%
               </Animated.Text>
             }
+            <TextButton
+              style={styles.restartBtn}
+              onPress={() => this.restartQuiz()}>
+              Restart Quiz
+            </TextButton>
+            <TextButton
+              style={styles.backBtn}
+              onPress={() => this.backToDeck()}>
+              Back to Deck
+            </TextButton>
           </View>
         )
     )
@@ -263,7 +290,18 @@ const styles = StyleSheet.create({
     },
     shadowRadius: 5,
     shadowOpacity: 0.4,
-  }
+  },
+  restartBtn: {
+    marginTop: 50,
+    backgroundColor: white,
+    color: persianBlue,
+    borderColor: persianBlue,
+    borderWidth: 1,
+  },
+  backBtn: {
+    backgroundColor: persianBlue,
+    color: white,
+  },
 })
 
 
