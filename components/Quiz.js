@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
   },
   score: {
     fontSize: 60,
-    fontWeight: 'bold'
+    color: xiketic,
   },
   qAndA: {
     flex: 4,
