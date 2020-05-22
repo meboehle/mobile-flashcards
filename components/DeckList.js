@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react'
-import { ScrollView, StyleSheet, View, Text } from 'react-native'
+import React, { useCallback, useRef } from 'react'
+import { ScrollView, StyleSheet, View, Text, Animated } from 'react-native'
 import DeckDetails from './DeckDetails'
-import { white, xiketic, gray, persianBlue, persianGreen } from '../utils/colors'
+import { white, xiketic, gray, persianBlue } from '../utils/colors'
 import { connect } from 'react-redux'
 import { receiveDecks } from '../actions'
 import { getDecks } from '../utils/api'
@@ -11,24 +11,34 @@ import { useFocusEffect } from '@react-navigation/native'
 function DeckList ({dispatch, decks, navigation}) {
   useFocusEffect(useCallback(() => {
     getDecks()
-    .then((decks) => dispatch(receiveDecks(JSON.parse(decks))))
+      .then((decks) => dispatch(receiveDecks(JSON.parse(decks))))
   }, [getDecks, decks]))
+
+  const bounceValue = useRef(new Animated.Value(1)).current
+  const showDeck = (deck) => {
+    Animated.sequence([
+      Animated.spring(bounceValue, { toValue: 1.02, duration: 300, useNativeDriver: true }),
+      Animated.timing(bounceValue, { toValue: 1, useNativeDriver: true })
+    ]).start(() => navigation.navigate('Deck', { deckId: deck.title }))
+  }
 
   return (
     <View style={{flex: 1}}>
       <Text style={styles.title}>Flashcard Decks</Text>
       <ScrollView>
-        {Object.values(decks).map((deck) => (
-          <TouchableOpacity
-            key={deck.title}
-            onPress={() => navigation.navigate('Deck', { deckId: deck.title })}>
-            <DeckDetails
-              style={styles.deck}
-              titleStyle={styles.deckTitle}
-              subTitleStyle={styles.deckSubtitle}
-              title={deck.title}
-              numCards={deck.questions.length} />
-          </TouchableOpacity>
+        {Object.values(decks).map((deck, i) => (
+            <TouchableOpacity
+              key={deck.title}
+              onPress={() => showDeck(deck)}>
+              <Animated.View style={{ transform: [{ scale: bounceValue }] }}>
+                <DeckDetails
+                  style={styles.deck}
+                  titleStyle={styles.deckTitle}
+                  subTitleStyle={styles.deckSubtitle}
+                  title={deck.title}
+                  numCards={deck.questions.length} />
+              </Animated.View>
+            </TouchableOpacity>
         ))}
       </ScrollView>
     </View>
