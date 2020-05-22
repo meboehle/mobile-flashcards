@@ -37,17 +37,15 @@ class AddDeck extends Component {
 
         this.setState(({ value: '', disabled: true }))
 
-        this.toHome()
+        this.toDeck(value)
       }
     }
   }
 
-  toHome = () => {
-    this.props.navigation.dispatch(
-      CommonActions.goBack({
-        key: 'DeckList',
-      })
-    )
+  toDeck = (deckId) => {
+    const { navigation } = this.props
+    navigation.push('Decks')
+    navigation.navigate('Deck', { deckId: deckId })
   }
 
   onChangeText = (text) => {
@@ -74,7 +72,7 @@ class AddDeck extends Component {
           style={disabled ? styles.disabledBtn : styles.button}
           activeOpacity={disabled ? 1 : 0.7}
           onPress={() => this.onSubmit(disabled)}>
-          Submit
+          Create Deck
         </TextButton>
       </KeyboardAvoidingView>
     )
