@@ -1,5 +1,7 @@
 ## iOS Mobile Flashcards App
 
+***This app has only been tested on iOS devices***
+
 #### Running the application:
 1. Install the Expo client on your iOS device (https://apps.apple.com/app/apple-store/id982107779)
 2. Clone the mobile-flashcards project and switch to the directory
