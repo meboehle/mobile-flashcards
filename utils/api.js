@@ -80,6 +80,6 @@ export function setQuizNotification () {
 }
 
 export function clearQuizNotification () {
-  AsyncStorage.removeItem(NOTIFICATIONS_KEY)
+  return AsyncStorage.removeItem(NOTIFICATIONS_KEY)
     .then(Notifications.cancelAllScheduledNotificationsAsync)
 }

@@ -80,10 +80,7 @@ class Quiz extends Component {
       Animated.sequence([
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 }),
-      ]).start()
-
-      clearQuizNotification()
-        .then(setQuizNotification)
+      ]).start(() => clearQuizNotification().then(setQuizNotification))
     }
 
     this.setState((prevState) => ({
@@ -106,10 +103,7 @@ class Quiz extends Component {
       Animated.sequence([
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 })
-      ]).start()
-
-      clearQuizNotification()
-        .then(setQuizNotification)
+      ]).start(() => clearQuizNotification().then(setQuizNotification))
     }
 
     this.setState((prevState) => ({
