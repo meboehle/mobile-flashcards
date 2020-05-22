@@ -1,12 +1,15 @@
 import { AsyncStorage } from 'react-native'
+import { Notifications } from 'expo'
+import * as Permissions from 'expo-permissions'
 
 const DECK_STORAGE_KEY = 'mobile-flashcards:decks'
+const NOTIFICATIONS_KEY = 'mobile-flashcards:notifications'
 
 export function getDecks () {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
 }
 
-export function getDeck(id) {
+export function getDeck (id) {
   return AsyncStorage.getItem(DECK_STORAGE_KEY)
     .then((results) => {
       const data = JSON.parse(results)
@@ -34,4 +37,49 @@ export function addCardToDeck (title, card) {
         [title]: data[title]
       }))
     })
+}
+
+function createQuizNotification () {
+  return {
+    title: 'Take a quiz today!',
+    body: "Don't forget to take a quiz today! 🍎",
+    ios: {
+      sound: true,
+    }
+  }
+}
+
+export function setQuizNotification () {
+  AsyncStorage.getItem(NOTIFICATIONS_KEY)
+    .then(JSON.parse)
+    .then((data) => {
+      if (data === null) {
+        Permissions.askAsync(Permissions.NOTIFICATIONS)
+          .then(({ status }) => {
+            if (status === 'granted') {
+              Notifications.cancelAllScheduledNotificationsAsync()
+
+              let tomorrow = new Date()
+              tomorrow.setDate(tomorrow.getDate() + 1)
+              tomorrow.setHours(16)
+              tomorrow.setMinutes(0)
+
+              Notifications.scheduleLocalNotificationAsync(
+                createQuizNotification(),
+                {
+                  time: tomorrow,
+                  repeat: 'day',
+                }
+              )
+
+              AsyncStorage.setItem(NOTIFICATIONS_KEY, JSON.stringify(true))
+            }
+          })
+      }
+    })
+}
+
+export function clearQuizNotification () {
+  AsyncStorage.removeItem(NOTIFICATIONS_KEY)
+    .then(Notifications.cancelAllScheduledNotificationsAsync)
 }

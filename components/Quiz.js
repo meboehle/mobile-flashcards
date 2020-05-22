@@ -3,7 +3,7 @@ import { Text, View, StyleSheet, Animated } from 'react-native'
 import { connect } from 'react-redux'
 import { persianGreen, tartOrange, white, xiketic, persianBlue } from '../utils/colors'
 import TextButton from './TextButton'
-import { getDeck } from '../utils/api'
+import { getDeck, setQuizNotification, clearQuizNotification } from '../utils/api'
 
 class Quiz extends Component {
   state = {
@@ -81,6 +81,9 @@ class Quiz extends Component {
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 }),
       ]).start()
+
+      clearQuizNotification()
+        .then(setQuizNotification)
     }
 
     this.setState((prevState) => ({
@@ -104,6 +107,9 @@ class Quiz extends Component {
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 })
       ]).start()
+
+      clearQuizNotification()
+        .then(setQuizNotification)
     }
 
     this.setState((prevState) => ({

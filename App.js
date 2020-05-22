@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { StyleSheet, SafeAreaView, StatusBar } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
@@ -13,6 +13,7 @@ import Deck from './components/Deck'
 import AddDeck from './components/AddDeck'
 import Quiz from './components/Quiz'
 import AddCard from './components/AddCard'
+import { setQuizNotification } from './utils/api'
 
 
 const Tab = createBottomTabNavigator()
@@ -91,17 +92,22 @@ const MainNav = () => (
   </Stack.Navigator>
 )
 
-export default function App() {
-  return (
-    <Provider store={createStore(reducer)}>
-      <SafeAreaView style={styles.container}>
-        <NavigationContainer>
-          <StatusBar barStyle='dark-content' />
-          <MainNav />
-        </NavigationContainer>
-      </SafeAreaView>
-    </Provider>
-  )
+export default class App extends Component {
+  componentDidMount () {
+    setQuizNotification()
+  }
+  render() {
+    return (
+      <Provider store={createStore(reducer)}>
+        <SafeAreaView style={styles.container}>
+          <NavigationContainer>
+            <StatusBar barStyle='dark-content' />
+            <MainNav />
+          </NavigationContainer>
+        </SafeAreaView>
+      </Provider>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
