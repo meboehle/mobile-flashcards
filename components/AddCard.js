@@ -60,7 +60,7 @@ class AddCard extends Component {
       <KeyboardAvoidingView
         behavior={'padding'}
         style={styles.container}>
-        <Text style={styles.deckTitle}>{this.props.deckTitle.toUpperCase()}</Text>
+        <Text style={styles.deckTitle}>{this.props.deckTitle.trim()}</Text>
         <Text style={styles.title}>Add a Card</Text>
         <TextInput
           placeholder='Question'
@@ -98,15 +98,22 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   deckTitle: {
-    fontSize: 60,
+    fontSize: 50,
     textAlign: 'center',
     color: persianBlue,
-    paddingBottom: 20,
-    fontWeight: 'bold'
+    paddingBottom: 15,
+    fontWeight: '600'
   },
   input: {
     backgroundColor: white,
     height: 40,
+    shadowColor: xiketic,
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowRadius: 5,
+    shadowOpacity: 0.4,
     width: 300,
     fontSize: 24,
     borderColor: xiketic,
@@ -124,7 +131,8 @@ const styles = StyleSheet.create({
   disabledBtn: {
     backgroundColor: persianBlue,
     opacity: 0.3,
-    color: white
+    color: white,
+    marginBottom: 100,
   }
 })
 
