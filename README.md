@@ -3,8 +3,8 @@
 #### Running the application:
 1. Install the Expo client on your iOS device (https://apps.apple.com/app/apple-store/id982107779)
 2. Clone the mobile-flashcards project and switch to the directory
-3. Run npm install
-4. Run npm start
+3. Run yarn install
+4. Run yarn start
 5. Scan the QR code shown in terminal or the web browser and open the expo app
 
 #### Description:
