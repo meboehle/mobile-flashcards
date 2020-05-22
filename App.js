@@ -13,7 +13,6 @@ import Deck from './components/Deck'
 import AddDeck from './components/AddDeck'
 import Quiz from './components/Quiz'
 import AddCard from './components/AddCard'
-// import DeckDetails from './components/DeckDetails'
 
 
 const Tab = createBottomTabNavigator()
