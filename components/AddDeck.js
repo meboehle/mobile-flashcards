@@ -1,11 +1,10 @@
 import React, { Component } from 'react'
-import { Text, TextInput, StyleSheet, KeyboardAvoidingView } from 'react-native'
+import { Text, TextInput, StyleSheet, KeyboardAvoidingView, Keyboard } from 'react-native'
 import TextButton from './TextButton'
 import { xiketic, persianBlue, white } from '../utils/colors'
 import { addDeck } from '../actions'
 import { connect } from 'react-redux'
 import { saveDeckTitle } from '../utils/api'
-import { CommonActions } from '@react-navigation/native'
 
 class AddDeck extends Component {
   state = {
@@ -36,6 +35,8 @@ class AddDeck extends Component {
         saveDeckTitle(value)
 
         this.setState(({ value: '', disabled: true }))
+
+        Keyboard.dismiss()
 
         this.toDeck(value)
       }
