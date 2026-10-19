@@ -81,6 +81,20 @@ class Quiz extends Component {
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 }),
       ]).start(() => clearQuizNotification().then(setQuizNotification))
+
+      // Track quiz completion
+      const finalCorrect = this.state.correct + 1
+      const finalIncorrect = this.state.incorrect
+      const total = questions.length
+      if (typeof pendo !== 'undefined') {
+        pendo.track('quiz_completed', {
+          deckId: this.props.deckId,
+          totalQuestions: total,
+          correctAnswers: finalCorrect,
+          incorrectAnswers: finalIncorrect,
+          scorePercentage: Number((finalCorrect / total * 100).toFixed(1)),
+        })
+      }
     }
 
     this.setState((prevState) => ({
@@ -104,6 +118,20 @@ class Quiz extends Component {
         Animated.spring(textBounce, { toValue: 1.5, friction: 8 }),
         Animated.spring(textBounce, { toValue: 1, friction: 2 })
       ]).start(() => clearQuizNotification().then(setQuizNotification))
+
+      // Track quiz completion
+      const finalCorrect = this.state.correct
+      const finalIncorrect = this.state.incorrect + 1
+      const total = questions.length
+      if (typeof pendo !== 'undefined') {
+        pendo.track('quiz_completed', {
+          deckId: this.props.deckId,
+          totalQuestions: total,
+          correctAnswers: finalCorrect,
+          incorrectAnswers: finalIncorrect,
+          scorePercentage: Number((finalCorrect / total * 100).toFixed(1)),
+        })
+      }
     }
 
     this.setState((prevState) => ({

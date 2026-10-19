@@ -22,6 +22,13 @@ class AddCard extends Component {
     if (!disabled) {
       addCardToDeck(this.props.deckTitle, card)
 
+      // Track card added to deck
+      if (typeof pendo !== 'undefined') {
+        pendo.track('card_added_to_deck', {
+          deckTitle: this.props.deckTitle,
+        })
+      }
+
       this.setState(() => ({
         question: '',
         answer: '',

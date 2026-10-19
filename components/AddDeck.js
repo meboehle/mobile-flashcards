@@ -34,6 +34,13 @@ class AddDeck extends Component {
 
         saveDeckTitle(value)
 
+        // Track deck creation
+        if (typeof pendo !== 'undefined') {
+          pendo.track('deck_created', {
+            deckTitle: value,
+          })
+        }
+
         this.setState(({ value: '', disabled: true }))
 
         Keyboard.dismiss()
